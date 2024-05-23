@@ -160,6 +160,7 @@ if (mysqli_num_rows($check_user) > 0) {
         "date"=>$user['date'],
         "biography"=>$user['biography']
     ];
+
         setcookie(session_name(), session_id(), time() + (86400 * 30), "/");
     header('Location: ./index.php');
 

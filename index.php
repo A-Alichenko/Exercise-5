@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $errors['email'] = !empty($_COOKIE['email_error']);
     $errors['date'] = !empty($_COOKIE['date_error']);
     $errors['biography'] = !empty($_COOKIE['biography_error']);
-    $errors['gender'] = !empty($_COOKIE['gender']);
+    $errors['gender_error'] = !empty($_COOKIE['gender_error']);
     // TODO: аналогично все поля.
 
     // Выдаем сообщения об ошибках.
@@ -97,8 +97,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
     if ($errors['gender']) {
 
-        setcookie('gender', '', 100000);
-        setcookie('gender', '', 100000);
+        setcookie('gender_error', '', 100000);
+        setcookie('gender_value', '', 100000);
 
         $messages_gender[] = '<div class="error">Выберете пол.</div>';
     }
@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $values['date'] = empty($_COOKIE['date_value']) ? '' : strip_tags($_COOKIE['date_value']);
     $values['email'] = empty($_COOKIE['email_value']) ? '' : strip_tags($_COOKIE['email_value']);
     $values['biography'] = empty($_COOKIE['biography_value']) ? '' : strip_tags($_COOKIE['biography_value']);
-    $values['gender'] = empty($_COOKIE['gender']) ? '' : strip_tags($_COOKIE['gender']);
+    $values['gender'] = empty($_COOKIE['gender_value']) ? '' : strip_tags($_COOKIE['gender_value']);
     // TODO: аналогично все поля.
 
     // Если нет предыдущих ошибок ввода, есть кука сессии, начали сессию и
@@ -127,13 +127,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $values['date'] = empty($_COOKIE['date_value']) ? '' : strip_tags($_SESSION['auth']['date']);
         $values['email'] = empty($_COOKIE['email_value']) ? '' : strip_tags($_SESSION['auth']['email']);
         $values['biography'] = empty($_COOKIE['biography_value']) ? '' : strip_tags($_SESSION['auth']['biography']);
-        $values['gender'] = empty($_COOKIE['gender_']) ? '' : strip_tags($_SESSION['auth']['gender']);
+        $values['gender'] = empty($_COOKIE['gender_value']) ? '' : strip_tags($_SESSION['auth']['gender']);
 
 
         // TODO: загрузить данные пользователя из БД
         // и заполнить переменную $values,
         // предварительно санитизовав.
         printf('Вход с логином %s, uid %d', $_SESSION['auth']['login'], $_SESSION['auth']['uid']);
+
     }
 
     // Включаем содержимое файла form.php.
@@ -197,12 +198,12 @@ else {
     }
     if (empty($_POST['gender'])) {
 
-        setcookie('gender', '8', time() + 24 * 60 * 60);
+        setcookie('gender_error', '8', time() + 24 * 60 * 60);
         $errors = TRUE;
     }
     else {
         // Сохраняем ранее введенное в форму значение на месяц.
-        setcookie('gender', $_POST['gender'], time() + 30 * 24 * 60 * 60);
+        setcookie('gender_value', $_POST['gender'], time() + 30 * 24 * 60 * 60);
     }
 // *************
 // TODO: тут необходимо проверить правильность заполнения всех остальных полей.
@@ -227,7 +228,7 @@ else {
     }
 
     // Проверяем меняются ли ранее сохраненные данные или отправляются новые.
-    if (session_name() && session_start() && $_SESSION['auth']) {
+    if (!empty(session_name()) && session_start() && $_SESSION['auth']) {
 
     }
     else {
