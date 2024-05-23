@@ -228,7 +228,18 @@ else {
     }
 
     // Проверяем меняются ли ранее сохраненные данные или отправляются новые.
+    //TODO: ДОДЕЛАТЬ ОБНОВЛЕНИЕ ДАННЫХ В ТАБЛИЦЕ
     if (!empty(session_name()) && session_start() && $_SESSION['auth']) {
+        $name_auth = strip_tags($_SESSION['auth']['name']);
+        $phone_auth = strip_tags($_SESSION['auth']['phone']); ;
+        $email_auth = strip_tags($_SESSION['auth']['email']);
+        $date_auth = strip_tags($_SESSION['auth']['date']);
+        $biography_auth = strip_tags($_SESSION['auth']['biography']);
+        $gender_auth = strip_tags($_SESSION['auth']['gender']);
+        $uid = $_SESSION['auth']['uid'];
+        $db = new PDO('mysql:host=localhost;dbname=u67364', 'u67364', '9539974', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $stmt = $db->prepare("UPDATE application SET names = $name_auth , phones = $phone_auth, email = $email_auth, dates = $date_auth, gender = $gender_auth, biography = $biography_auth WHERE uid = $uid");
 
     }
     else {
