@@ -99,6 +99,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         .form-row + .form-row {
             margin-top: 25px;
         }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #1b1818;
+
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: #FFFFFF;
+
+        }
         .button, .checkbox-container {
             margin-left: auto;
         }
@@ -107,7 +118,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             background-color: rgba(255, 134, 48, 0.1);
         }
     </style>
-    <form action="" method="POST">
+    <form action="index.php" method="POST">
+        <div class = "body">
         <fieldset>
             <legend>
                 Персональные данные
@@ -125,9 +137,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         </fieldset>
         <div class="form-row">
             <button class="button button-blue" type="submit">Войти</button>
-
+            <a class="button button-blue" type="submit" href="./form.php">Выйти</a>
         </div>
-
+        </div>
         <!--<input name="login" />
       <input name="pass" />
       <input type="submit" value="Войти" />-->
@@ -144,6 +156,7 @@ $connect = mysqli_connect('localhost', 'u67364', '9539974', 'u67364');
 if (!$connect) {
     die('Error connect to DataBase');
 }
+session_start();
 $login = $_POST['login'];
 $password = md5($_POST['pass']);
 $i=0;
@@ -165,7 +178,13 @@ if (mysqli_num_rows($check_user) > 0) {
     header('Location: ./index.php');
 
 } else {
+
+
+
     $_SESSION['message'] = 'Не верный логин или пароль';
+    printf('Не верный логин или пароль');
+
     header('Location: ./login.php');
+
 }}
 ?>

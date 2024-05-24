@@ -229,18 +229,19 @@ else {
 
     // Проверяем меняются ли ранее сохраненные данные или отправляются новые.
     //TODO: ДОДЕЛАТЬ ОБНОВЛЕНИЕ ДАННЫХ В ТАБЛИЦЕ
-    if (!empty(session_name()) && session_start() && $_SESSION['auth']) {
-        $name_auth = strip_tags($_SESSION['auth']['name']);
-        $phone_auth = strip_tags($_SESSION['auth']['phone']); ;
-        $email_auth = strip_tags($_SESSION['auth']['email']);
-        $date_auth = strip_tags($_SESSION['auth']['date']);
-        $biography_auth = strip_tags($_SESSION['auth']['biography']);
-        $gender_auth = strip_tags($_SESSION['auth']['gender']);
+
+    if (!empty(session_name()) && session_start() && isset($_SESSION['auth'])) {
+        $name_auth = $_POST['name'];
+        $phone_auth = $_POST['phone'];
+        $email_auth = $_POST['email'];
+        $date_auth =$_POST['date'];
+        $biography_auth = $_POST['biography'];
+        $gender_auth =  $_POST['gender'];
         $uid = $_SESSION['auth']['uid'];
         $db = new PDO('mysql:host=localhost;dbname=u67364', 'u67364', '9539974', array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $stmt = $db->prepare("UPDATE application SET names = $name_auth , phones = $phone_auth, email = $email_auth, dates = $date_auth, gender = $gender_auth, biography = $biography_auth WHERE uid = $uid");
-
+        $stmt = $db->prepare("UPDATE application SET names = ?, phones = ?, email = ?, dates = ?, gender = ?, biography = ? WHERE uid = ?");
+        $stmt->execute([$name_auth, $phone_auth, $email_auth, $date_auth, $gender_auth, $biography_auth, $uid]);
     }
     else {
         // Генерируем уникальный логин и пароль.

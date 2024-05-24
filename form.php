@@ -71,8 +71,10 @@
 <body>
 
 <div class="body">
-    <?php session_destroy() ;
-    if (!empty($messages)) {
+
+
+    <?php
+    if (!empty($messages)&& session_start()&& !empty(session_name())) {
         print('<div id="messages">');
         // Выводим все сообщения.
         foreach ($messages as $message) {
@@ -186,6 +188,8 @@
             <input type="checkbox" id="contract" name="agree" required>
             <label for="contract">С контрактом ознакомлен(а)</label><br>
             <input class="btn" type="submit" value="Сохранить">
+
+        <input class="btn" type="submit" value="Войти" onclick="window.location = './login.php';">
         </form>
     </div>
 
