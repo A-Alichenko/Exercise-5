@@ -69,16 +69,20 @@
     </style>
 </head>
 <body>
+
 <div class="body">
+
+
     <?php
-    if (!empty($messages)) {
+    if (!empty($messages)&& session_start()&& !empty(session_name())) {
+
         print('<div id="messages">');
         // Выводим все сообщения.
         foreach ($messages as $message) {
             print($message);
         }
         print('</div>');
-    }
+    }session_destroy();
     ?>
 </div>
 
@@ -90,7 +94,7 @@
 
 
         <label for="name">ФИО:</label><br>
-        <input type="text" id="name" name="name" <?php if ($errors['name']) {print 'class="error"';} ?> value="<?php print $values['name']; ?>"
+        <input type="text" id="name" name="name" <?php if ($errors['name']) {print 'class="error"';} ?> value="<?php  print $values['name']; ?>"
         /> <?php if (!empty($messages_fio)) {
             print('<div id="messages_fio">');
             // Выводим все сообщения.
@@ -101,7 +105,7 @@
         }?><br>
 
         <label for="phone">Телефон:</label><br>
-        <input type="tel" id="phone" name="phone"  <?php if ($errors['phone']) {print 'class="error"';} ?> value="<?php print $values['phone']; ?>" /><?php if (!empty($messages_phone)) {
+        <input type="tel" id="phone" name="phone"  <?php if ($errors['phone']) {print 'class="error"';} ?> value="<?php  print $values['phone'];?>" /><?php if (!empty($messages_phone)) {
             print('<div id="messages">');
             // Выводим все сообщения.
             foreach ($messages_phone as $message_phone) {
@@ -110,7 +114,7 @@
         }?> <br>
 
         <label for="email">E-mail:</label><br>
-        <input type="email" id="email" name="email" <?php if ($errors['email']) {print 'class="error"';}?>  value="<?php print $values['email']; ?>"/><?php if (!empty($messages_email)) {
+        <input type="email" id="email" name="email" <?php if ($errors['email']) {print 'class="error"';}?>  value="<?php  print $values['email']; ?>"/><?php if (!empty($messages_email)) {
             print('<div id="messages">');
             // Выводим все сообщения.
             foreach ($messages_email as $message_email) {
@@ -119,7 +123,7 @@
         }?> <br>
 
         <label for="dob">Дата рождения:</label><br>
-        <input type="date" id="dob" name="date" <?php if ($errors['date']) {print 'class="error"';} ?> value="<?php print $values['date']; ?>"/><?php if (!empty($messages_date)) {
+        <input type="date" id="dob" name="date" <?php if ($errors['date']) {print 'class="error"';} ?> value="<?php print $values['date'];?>"/><?php if (!empty($messages_date)) {
             print('<div id="messages">');
             // Выводим все сообщения.
             foreach ($messages_date as $message_date) {
@@ -128,9 +132,27 @@
         }?><br>
 
         <label>Пол:</label><br>
-        <input type="radio" id="male" name="gender" value="m" required>
+        <input type="radio" id="male" name="gender" value="m" <?php if ($errors['gender']) {print 'class="error"';} ?><?php if( $values['gender'] == 'm'){?> checked = "<?php {$values['gender'] = 'on';}}?>"> <?php
+        if (!empty($messages_gender)) {
+            print('<div id="messages">');
+            // Выводим все сообщения.
+            foreach ($messages_gender as $message_gender) {
+                print($message_gender);
+            }
+            print('</div>');
+        }
+        ?>
         <label for="male">Мужской</label>
-        <input type="radio" id="female" name="gender" value="f" required>
+        <input type="radio" id="female" name="gender" value="f" <?php if ($errors['gender']) {print 'class="error"';} ?><?php if( $values['gender'] == 'f'){?> checked = "<?php {$values['gender'] = 'on';}}?>"> <?php
+        if (!empty($messages_gender)) {
+            print('<div id="messages">');
+            // Выводим все сообщения.
+            foreach ($messages_gender as $message_gender) {
+                print($message_gender);
+            }
+            print('</div>');
+        }
+        ?>
         <label for="female">Женский</label><br>
 
 
@@ -151,24 +173,26 @@
             <option value="Scala">Scala</option>
         </select><br>
 
-        <label class="title" for="biography">Биография:</label>
-        <textarea id="biography" name="biography" rows="4" <?php if($errors['biography']){print 'class="error"';}?>><?php print $values['biography'];?></textarea><?php if (!empty($messages_biography)){
-            print('<div id="messages">');
-            // Выводим все сообщения.
-            foreach ($messages_biography as $message_biography) {
-                print($message_biography);
-            }
-            print('</div>');}?><br>
+            <label class="title" for="biography">Биография:</label>
+            <textarea id="biography" name="biography" rows="4" <?php if($errors['biography']){print 'class="error"';}?>><?php print $values['biography'];?></textarea><?php if (!empty($messages_biography)){
+                print('<div id="messages">');
+                // Выводим все сообщения.
+                foreach ($messages_biography as $message_biography) {
+                 print($message_biography);
+                }
+             print('</div>');}?><br>
 
 
 
 
 
-        <input type="checkbox" id="contract" name="agree" required>
-        <label for="contract">С контрактом ознакомлен(а)</label><br>
-        <input class="btn" type="submit" value="Сохранить">
-    </form>
-</div>
+            <input type="checkbox" id="contract" name="agree" required>
+            <label for="contract">С контрактом ознакомлен(а)</label><br>
+            <input class="btn" type="submit" value="Сохранить">
 
-</body>
+        <input class="btn" type="submit" value="Войти" onclick="window.location = './login.php';">
+        </form>
+    </div>
+
+    </body>
 </html>
